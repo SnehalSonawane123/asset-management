@@ -1,11 +1,12 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
 import io
+
+from db import init_db, fetch_all, fetch_by_id, insert_asset, update_asset, delete_asset
 
 # ─── Page Config ─────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -63,57 +64,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Database ─────────────────────────────────────────────────────────────────
-DB_FILE = "assets.db"
-
-def get_conn():
-    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def init_db():
-    with get_conn() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS assets (
-                id        INTEGER PRIMARY KEY AUTOINCREMENT,
-                name      TEXT    NOT NULL,
-                category  TEXT    NOT NULL DEFAULT 'Other',
-                quantity  INTEGER NOT NULL DEFAULT 1,
-                location  TEXT,
-                status    TEXT    NOT NULL DEFAULT 'Available',
-                created_at TEXT   DEFAULT (datetime('now'))
-            )
-        """)
-        conn.commit()
-
-def fetch_all():
-    with get_conn() as conn:
-        rows = conn.execute("SELECT * FROM assets ORDER BY id DESC").fetchall()
-    return pd.DataFrame([dict(r) for r in rows]) if rows else pd.DataFrame(
-        columns=["id","name","category","quantity","location","status","created_at"])
-
-def insert_asset(name, category, quantity, location, status):
-    with get_conn() as conn:
-        conn.execute(
-            "INSERT INTO assets (name, category, quantity, location, status) VALUES (?,?,?,?,?)",
-            (name.strip(), category, quantity, location.strip(), status)
-        )
-        conn.commit()
-
-def update_asset(aid, name, category, quantity, location, status):
-    with get_conn() as conn:
-        conn.execute(
-            "UPDATE assets SET name=?, category=?, quantity=?, location=?, status=? WHERE id=?",
-            (name.strip(), category, quantity, location.strip(), status, aid)
-        )
-        conn.commit()
-
-def delete_asset(aid):
-    with get_conn() as conn:
-        conn.execute("DELETE FROM assets WHERE id=?", (aid,))
-        conn.commit()
-
-init_db()
+init_db()  # initialise DB from setup.sql on first run
 
 # ─── Sidebar Navigation ───────────────────────────────────────────────────────
 with st.sidebar:
