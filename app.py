@@ -15,31 +15,34 @@ st.set_page_config(
 )
 
 # ─── Colour Tokens ────────────────────────────────────────────────────────────
-ACCENT      = "#0d9488"
-ACCENT_DARK = "#0f766e"
-SIDEBAR_TOP = "#0f172a"
-SIDEBAR_BOT = "#1e293b"
-BG          = "#f8fafc"
-TEXT        = "#0f172a"
-MUTED       = "#64748b"
+ACCENT      = "#2dd4bf"
+ACCENT_DARK = "#14b8a6"
+SIDEBAR_TOP = "#0a0f1e"
+SIDEBAR_BOT = "#0f172a"
+BG          = "#0f172a"
+BG2         = "#1e293b"
+BG3         = "#263044"
+TEXT        = "#e2e8f0"
+MUTED       = "#94a3b8"
+BORDER      = "#2d3f55"
 
 STATUS_HEX = {
-    "Available":   "#10b981",
-    "In Use":      "#3b82f6",
-    "Maintenance": "#f59e0b",
+    "Available":   "#34d399",
+    "In Use":      "#60a5fa",
+    "Maintenance": "#fbbf24",
     "Retired":     "#94a3b8",
 }
 STATUS_BG = {
-    "Available":   "#d1fae5",
-    "In Use":      "#dbeafe",
-    "Maintenance": "#fef3c7",
-    "Retired":     "#f1f5f9",
+    "Available":   "#064e3b",
+    "In Use":      "#1e3a5f",
+    "Maintenance": "#451a03",
+    "Retired":     "#1e293b",
 }
 STATUS_FG = {
-    "Available":   "#065f46",
-    "In Use":      "#1e40af",
-    "Maintenance": "#92400e",
-    "Retired":     "#475569",
+    "Available":   "#6ee7b7",
+    "In Use":      "#93c5fd",
+    "Maintenance": "#fcd34d",
+    "Retired":     "#94a3b8",
 }
 
 CAT_PALETTE = ["#0d9488","#6366f1","#f59e0b","#ef4444","#8b5cf6"]
@@ -49,68 +52,151 @@ STATUSES    = ["Available", "In Use", "Maintenance", "Retired"]
 # ─── CSS ─────────────────────────────────────────────────────────────────────
 st.markdown(f"""
 <style>
-  html, body, [data-testid="stAppViewContainer"] {{
+  html, body, [data-testid="stAppViewContainer"],
+  [data-testid="stMain"], .main, .block-container {{
       background:{BG} !important; color:{TEXT};
       font-family:'Inter','Segoe UI',sans-serif;
   }}
+  /* All text defaults */
+  p, span, div, label, li {{ color:{TEXT}; }}
+
+  /* ── Sidebar ── */
   [data-testid="stSidebar"] > div:first-child {{
       background:linear-gradient(180deg,{SIDEBAR_TOP} 0%,{SIDEBAR_BOT} 100%) !important;
   }}
   [data-testid="stSidebar"] * {{ color:#e2e8f0 !important; }}
-  [data-testid="stSidebar"] hr {{ border-color:#334155 !important; }}
+  [data-testid="stSidebar"] hr {{ border-color:#1e293b !important; }}
   [data-testid="stSidebar"] [data-baseweb="radio"] label {{
       padding:8px 14px !important; border-radius:8px !important;
       color:#cbd5e1 !important; font-size:0.9rem !important; transition:background .15s;
   }}
   [data-testid="stSidebar"] [data-baseweb="radio"] label:hover {{
-      background:rgba(255,255,255,0.07) !important;
+      background:rgba(255,255,255,0.06) !important;
   }}
+
+  /* ── Metric cards ── */
   [data-testid="metric-container"] {{
-      background:#fff; border-radius:14px; padding:20px 18px 14px;
-      box-shadow:0 1px 3px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.04);
+      background:{BG2}; border-radius:14px; padding:20px 18px 14px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.4),0 4px 16px rgba(0,0,0,0.3);
       border-top:3px solid {ACCENT};
   }}
   [data-testid="stMetricValue"] {{ color:{TEXT} !important; font-weight:700; }}
   [data-testid="stMetricLabel"] {{ color:{MUTED} !important; font-size:0.8rem; }}
+
+  /* ── Page banner ── */
   .page-banner {{
-      background:linear-gradient(135deg,{SIDEBAR_TOP} 0%,#134e4a 100%);
+      background:linear-gradient(135deg,{SIDEBAR_TOP} 0%,#0d2d2a 100%);
       color:white; padding:24px 32px; border-radius:16px; margin-bottom:28px;
-      box-shadow:0 4px 24px rgba(13,148,136,0.2);
+      border:1px solid {BORDER};
+      box-shadow:0 4px 24px rgba(45,212,191,0.12);
   }}
   .page-banner h1 {{ color:white; margin:0; font-size:1.6rem; font-weight:800; letter-spacing:-.02em; }}
-  .page-banner p  {{ color:rgba(255,255,255,0.6); margin:5px 0 0; font-size:0.88rem; }}
+  .page-banner p  {{ color:rgba(255,255,255,0.5); margin:5px 0 0; font-size:0.88rem; }}
+
+  /* ── Section heading ── */
   .sec-head {{
       font-size:0.68rem; font-weight:700; letter-spacing:.1em;
       text-transform:uppercase; color:{MUTED}; margin-bottom:12px;
   }}
+
+  /* ── Generic card ── */
   .ams-card {{
-      background:#fff; border-radius:16px; padding:24px 26px;
-      box-shadow:0 1px 3px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.04);
-      margin-bottom:18px;
+      background:{BG2}; border-radius:16px; padding:24px 26px;
+      border:1px solid {BORDER};
+      box-shadow:0 1px 3px rgba(0,0,0,0.4); margin-bottom:18px;
   }}
+
+  /* ── Inline edit panel ── */
   .edit-panel {{
-      background:#f0fdfa; border:1.5px solid {ACCENT};
+      background:#0d2d2a; border:1.5px solid {ACCENT};
       border-radius:14px; padding:20px 24px; margin:2px 0 14px;
   }}
-  .asset-divider {{ border:none; border-top:1px solid #f1f5f9; margin:4px 0; }}
+
+  /* ── Asset divider ── */
+  .asset-divider {{ border:none; border-top:1px solid {BORDER}; margin:4px 0; }}
+
+  /* ── Inputs / selects ── */
+  [data-baseweb="input"] input,
+  [data-baseweb="select"] div[data-baseweb="select"],
+  [data-baseweb="textarea"] textarea {{
+      background:{BG3} !important; color:{TEXT} !important;
+      border-color:{BORDER} !important; border-radius:8px !important;
+  }}
+  [data-baseweb="input"]:focus-within,
+  [data-baseweb="select"]:focus-within {{
+      border-color:{ACCENT} !important;
+      box-shadow:0 0 0 3px rgba(45,212,191,0.15) !important;
+  }}
+
+  /* ── Number input ── */
+  [data-testid="stNumberInput"] input {{
+      background:{BG3} !important; color:{TEXT} !important;
+      border-color:{BORDER} !important;
+  }}
+
+  /* ── Dataframe ── */
+  [data-testid="stDataFrame"] {{ background:{BG2} !important; border-radius:12px; }}
+
+  /* ── Primary button ── */
   [data-testid="stFormSubmitButton"] button[kind="primary"],
   .stButton button[kind="primary"] {{
-      background:{ACCENT} !important; border:none !important;
-      border-radius:9px !important; font-weight:700 !important;
+      background:{ACCENT} !important; color:#0f172a !important;
+      border:none !important; border-radius:9px !important; font-weight:700 !important;
   }}
   [data-testid="stFormSubmitButton"] button[kind="primary"]:hover,
   .stButton button[kind="primary"]:hover {{
       background:{ACCENT_DARK} !important;
   }}
+
+  /* ── Secondary / default button ── */
+  .stButton button {{
+      background:{BG3} !important; color:{TEXT} !important;
+      border:1px solid {BORDER} !important; border-radius:9px !important;
+  }}
+  .stButton button:hover {{
+      border-color:{ACCENT} !important;
+      color:{ACCENT} !important;
+  }}
+
+  /* ── PENCIL / DELETE icon buttons — centered square ── */
+  .stButton button[title="Edit"],
+  .stButton button[title="Delete"],
+  div[data-testid="column"] .stButton button {{
+      width:36px !important; height:36px !important;
+      padding:0 !important; min-height:36px !important;
+      display:flex !important; align-items:center !important;
+      justify-content:center !important;
+      font-size:1rem !important; line-height:1 !important;
+  }}
+
+  /* ── Tabs ── */
   [data-baseweb="tab-list"] {{
-      background:#f1f5f9 !important; border-radius:10px !important; padding:4px !important;
+      background:{BG2} !important; border-radius:10px !important; padding:4px !important;
+      border:1px solid {BORDER} !important;
   }}
-  [data-baseweb="tab"] {{ border-radius:7px !important; font-weight:600 !important; font-size:.88rem !important; }}
+  [data-baseweb="tab"] {{ border-radius:7px !important; font-weight:600 !important; font-size:.88rem !important; color:{MUTED} !important; }}
   [aria-selected="true"][data-baseweb="tab"] {{
-      background:white !important; color:{ACCENT} !important;
-      box-shadow:0 1px 4px rgba(0,0,0,0.1) !important;
+      background:{BG3} !important; color:{ACCENT} !important;
+      box-shadow:0 1px 4px rgba(0,0,0,0.3) !important;
   }}
-  hr {{ border:none; border-top:1px solid #e2e8f0; margin:18px 0; }}
+
+  /* ── Selectbox dropdown ── */
+  [data-baseweb="popover"] ul {{ background:{BG2} !important; border:1px solid {BORDER} !important; }}
+  [data-baseweb="popover"] li {{ color:{TEXT} !important; }}
+  [data-baseweb="popover"] li:hover {{ background:{BG3} !important; }}
+
+  /* ── Caption / small text ── */
+  [data-testid="stCaptionContainer"] {{ color:{MUTED} !important; }}
+
+  /* ── Alert ── */
+  [data-testid="stAlert"] {{ border-radius:10px !important; }}
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {{ width:6px; height:6px; }}
+  ::-webkit-scrollbar-track {{ background:{BG}; }}
+  ::-webkit-scrollbar-thumb {{ background:{BG3}; border-radius:3px; }}
+
+  hr {{ border:none; border-top:1px solid {BORDER}; margin:18px 0; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -129,7 +215,10 @@ def chart_base(fig, **kw):
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         font_family="Inter,Segoe UI,sans-serif", font_color=TEXT,
-        margin=dict(t=16, b=16, l=8, r=8), **kw
+        margin=dict(t=16, b=16, l=8, r=8),
+        xaxis=dict(gridcolor=BORDER, zerolinecolor=BORDER),
+        yaxis=dict(gridcolor=BORDER, zerolinecolor=BORDER),
+        **kw
     )
     return fig
 
@@ -219,7 +308,7 @@ if page == "🏠 Dashboard":
             pivot = df.pivot_table(index="category", columns="status",
                                    values="id", aggfunc="count", fill_value=0)
             fig = px.imshow(pivot, text_auto=True, aspect="auto",
-                            color_continuous_scale=[[0,"#f0fdfa"],[1,ACCENT]])
+                            color_continuous_scale=[[0,BG2],[1,ACCENT]])
             chart_base(fig)
             st.plotly_chart(fig, use_container_width=True)
 
@@ -245,7 +334,7 @@ elif page == "📋 All Assets":
         f1, f2, f3 = st.columns([1,1,2])
         sel_cat  = f1.selectbox("Category", ["All"] + sorted(df.category.unique().tolist()))
         sel_stat = f2.selectbox("Status",   ["All"] + sorted(df.status.unique().tolist()))
-        search   = f3.text_input("🔍  Search", placeholder="Name or location…")
+        search   = f3.text_input("Search", placeholder="🔍  Name or location…", label_visibility="collapsed")
 
         filtered = df.copy()
         if sel_cat  != "All": filtered = filtered[filtered.category == sel_cat]
@@ -278,6 +367,16 @@ elif page == "📋 All Assets":
             rc[4].markdown(badge(row["status"]), unsafe_allow_html=True)
 
             with rc[5]:
+                st.markdown("""
+                <style>
+                  div[data-testid="column"] .stButton button {
+                    width:34px !important; height:34px !important;
+                    padding:0 !important; min-height:34px !important;
+                    display:flex !important; align-items:center !important;
+                    justify-content:center !important; font-size:1rem !important;
+                    line-height:1 !important;
+                  }
+                </style>""", unsafe_allow_html=True)
                 btn_e, btn_d = st.columns(2)
                 if btn_e.button("✏️", key=f"e{rid}", help="Edit"):
                     st.session_state.edit_id = None if is_editing else rid
@@ -423,7 +522,7 @@ elif page == "📊 Reports":
             st.markdown('<div class="sec-head">Assets per Location</div>', unsafe_allow_html=True)
             st.dataframe(ls, use_container_width=True, hide_index=True)
             fig = px.bar(ls.head(15), x="location", y="Assets",
-                         color="Units", color_continuous_scale=[[0,"#ccfbf1"],[1,ACCENT]], text="Assets")
+                         color="Units", color_continuous_scale=[[0,BG3],[1,ACCENT]], text="Assets")
             fig.update_traces(textposition="outside")
             chart_base(fig, xaxis_title="Location", yaxis_title="Assets")
             st.plotly_chart(fig, use_container_width=True)
